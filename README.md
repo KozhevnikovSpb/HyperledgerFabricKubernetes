@@ -1,46 +1,15 @@
-Установка Hyperledger Fabric с помощью Kubernetes
-Установка будет производится на примере ОС Debian 12 (Bookworm) без установленного GUI.
-Для работы понадобится виртуальная машина со следующими минимальными параметрами:
-  Оперативная память от 8 Gb;
-  Процессор от 6-ти ядер;
-  Жесткий диск от 45 Gb;
-  Сетевой интерфейс в режим NAT Сеть. 
-
-При установке 
-
-  
 I.	Установка и настройка виртуальной машины.
 
 1.	Необходимо установить и настроить подходящую систему виртуализации (Virtual Box, VMware Workstation, Proxmox, Hyper-V и др.) В данной инструкции будет использована система для виртуализации Oracle VM VirtualBox. Скачать можно по ссылке - https://www.virtualbox.org/wiki/Downloads
-
 2.	Создать виртуальную сеть NAT со следующими параметрами
-
-
-
-
-
-
-
-
-
-
-
 3.	Создать перенаправление портов
-
 4.	Создаем виртуальную машину со следующими минимальными параметрами:
 •	Оперативная память от 8 Gb;
 •	Процессор от 6-ти ядер;
 •	Жесткий диск от 45 Gb;
 •	Сетевой интерфейс в режим NAT Сеть. 
 
-
-
-
-
-
-
 5.	В качестве гостевой ОС можно использовать Ubuntu Server (желательно в самом минимальном режиме) или Debian (без дальнейшей установки GUI). При установке Ubuntu Server необходимо обратить внимание на выбор типа жесткого диска в процессе установки, он не должен иметь тип LVM. При использовании ОС Debian получается минимальный установочный размер ОС около 2 Gb, это меньше чем для ОС Ubuntu Server. 
-
 
 II.	Установка ОС Debian на виртуальную машину
 
@@ -50,13 +19,10 @@ II.	Установка ОС Debian на виртуальную машину
 •	Локацию можно установить – Other -> Europe -> Russian Federation
 •	Конфигурацию локали оставляем и язык клавиатуры оставляем по умолчанию
 •	На этапе задания Domain name, необходимо вернуться на шаг назад и сконфигурировать IP адрес вручную
-ip – 10.0.2.5
-netmask – 255.255.255.0
-gateway – 10.0.2.1
-nameserver – 10.0.2.1
-
-
-
+  ip – 10.0.2.5
+  netmask – 255.255.255.0
+  gateway – 10.0.2.1
+  nameserver – 10.0.2.1
 •	Hostname и Domain name можно указать любой по желанию
 •	Задаем пароль root, затем имя администратор и пароль для него
 •	Выбираем часовой пояс
@@ -100,25 +66,14 @@ GRUB_CMDLINE_LINUX=”ipv6.disable=1”
 
 После перезагрузки перезапускаем сессию Putty, заново авторизуемся и поднимаем свои права до root
 
-
-
-
-
-
-
-
-
 Проверить статус swap
 ~# systemctl --type swap
+
 4.	Создать папку для хранения исходных файлов проекта
 ~# mkdir /opt/distr
-
 5.	Подключиться с помощью WinSCP и скопировать файлы проекта в папку 
-
 Копировать файлы проекта через WinSCP следует в папку /tmp. А затем из неё через Putty файлы копируются в папку назначения /opt/distr
-
 ~# cp -R /tmp/hyperledger /opt/distr/
-
 
 V.	Установка Docker, Minikube, настройка сетевой файловой системы NFS
 
@@ -153,12 +108,9 @@ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ~# asdf global minikube latest
 Это создаст кластер по умолчанию и локальный кластер kubernetes
 
-
-
 В файле настроек версий добавить версию установленного kubectl
 ~# nano /root/.tool-versions
 kubectl 1.32.0
-
 
 VI.	Настройка сетевой файловой системы (NFS)
 
@@ -177,9 +129,6 @@ VI.	Настройка сетевой файловой системы (NFS)
 ~# nano /etc/exports
 /mnt/nfs *(rw,sync,no_subtree_check,insecure)
 
-
-
-
 Активировать NFS сервер
 ~# exportfs -arv
 ~# systemctl restart nfs-kernel-server
@@ -197,23 +146,13 @@ VI.	Настройка сетевой файловой системы (NFS)
 ~# systemctl daemon-reload
 ~# reboot
 
-
 Проверить что диск примонтировался
 ~# df -h 
- 
 
 Запустить Minikube проверить запущенные ноды
 ~# minikube start --driver=docker --force
 ~# kubectl get nodes
 ~# kubectl get events
-
-
-
-
-
-
-
-
 
 VII.	Подготовка kubernetes
 
@@ -228,16 +167,10 @@ nfs:
 ~# kubectl apply -f /opt/distr/hyperledger/hf-on-k8s-course/1.nfs-config/pv.yaml
 ~# kubectl describe pv hf-on-k8s-course
  
-
 2.	Создать pvc (persistent volume claim)
 Создать pvc и проверить информацию о нем
 ~# kubectl apply -f /opt/distr/hyperledger/hf-on-k8s-course/1.nfs-config/pvc.yaml
 ~# kubectl describe pvc hf-on-k8s-course
-
-
-
-
-
 
 3.	Конфигурация рабочей нагрузки POD
 ~# kubectl apply -f /opt/distr/hyperledger/hf-on-k8s-course/1.nfs-config/pod.yaml
@@ -255,15 +188,6 @@ nfs:
 Сделать все скрипты исполняемыми и удалить права
 ~# chmod +x /mnt/nfs/scripts -R
 ~# ls -al /mnt/nfs/scripts/                                                    
-
-
-
-
-
-
-
-
-
 
 VIII.	Конфигурация Organizations FabricCA
 
@@ -422,9 +346,6 @@ basic:457b9837645cc58e9941bdfcd807c70893e3fa36148af1f912c47c80cd8ef38b
 
 ~# peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name basic --version 1.0 --init-required --sequence 1 -o -orderer:7050 --tls --cafile $ORDERER_CA --output json
 
-
-
-
 ~# exit
 
 10.	Процесс окончательной регистрации(фиксации).
@@ -433,9 +354,6 @@ basic:457b9837645cc58e9941bdfcd807c70893e3fa36148af1f912c47c80cd8ef38b
 Открывается интерактивная оболочка в CLI контейнере узла peer0 организации Org3. Это контейнер, через который отправляются команды для взаимодействия с Fabric.
 
 ~# peer lifecycle chaincode commit -o orderer:7050 --channelID mychannel --name basic --version 1.0 --sequence 1 --init-required --tls true --cafile $ORDERER_CA --peerAddresses peer0-org1:7051 --tlsRootCertFiles /organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0-org2:7051 --tlsRootCertFiles /organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt --peerAddresses peer0-org3:7051 --tlsRootCertFiles /organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
-
-
-
 
 ~# exit
 
@@ -456,7 +374,6 @@ basic:457b9837645cc58e9941bdfcd807c70893e3fa36148af1f912c47c80cd8ef38b
 
 Открываем оболочку в CLI контейнере узла peer0 организации Org3
 
-
 ~# peer chaincode invoke -o orderer:7050 --isInit --tls true --cafile $ORDERER_CA -C mychannel -n basic --peerAddresses peer0-org1:7051 --tlsRootCertFiles /organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0-org2:7051 --tlsRootCertFiles /organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt --peerAddresses peer0-org3:7051 --tlsRootCertFiles /organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt -c '{"Args":["InitLedger"]}' --waitForEvent
 
 Транзакция, инициированная через invoke, фиксируется в блоке, который добавляется в цепочку блоков (блокчейн).
@@ -471,96 +388,47 @@ basic:457b9837645cc58e9941bdfcd807c70893e3fa36148af1f912c47c80cd8ef38b
 -c '{"Args":["InitLedger"]}': Передает аргументы вызова, где InitLedger — функция chaincode.
 --waitForEvent: Ожидает подтверждения выполнения события.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 XI.	Установка API сервера
 
 1.	Создать контейнер с сервером API
 Перейти в папку с файлом Docker для создания контейнера
 ~# cd /opt/distr/hyperledger/hf-on-k8s-course/10.api/src/
-
 Создать образ контейнера с сервером API
 ~# docker build -t yangricardo/hf-k8s-api:latest .
-
 Импортировать образ в minikube
 ~# minikube image load yangricardo/hf-k8s-api:latest --daemon
 
 2.	Запустить контейнер с API сервером в minikube
 Перейти в папку со скриптом установки
 ~# cd /root/nfs_client/
-
 Запустить скрипт для генерации профилей подключения
 ~# bash scripts/ccp.sh
-
 Перезаписать конфигурацию по умолчанию FabricCA
 ~# kubectl -f /opt/distr/hyperledger/hf-on-k8s-course/10.api/k8/configmap.yaml apply
-
 Запустить API сервер
 ~# kubectl -f /opt/distr/hyperledger/hf-on-k8s-course/10.api/k8/api.yaml apply
-
 Дождаться запуска контейнера
 ~# kubectl get pods
-
-
 Включить переадресацию порта 4000 на API, работает в фоном режиме
 ~# kubectl port-forward services/api 4000 &  
-
 Убедиться, что minikube слушает порт 4000
 ~# lsof -i -P -n
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 XII.	Установка веб сервера и Hyperledger Explorer
 
 1.	Установить веб сервер UI
 Перейти в папку с Docker файлом для создания образа веб сервера
 ~# cd /opt/distr/hyperledger/hf-on-k8s-course/11.ui/
-
 Создать образ
 ~# docker build -t yangricardo/hf-k8s-web:latest .
-
 Импортировать образ в minikube
 ~# minikube image load yangricardo/hf-k8s-web:latest –daemon
-
 Запустить контейнер
 ~# kubectl -f /opt/distr/hyperledger/hf-on-k8s-course/11.ui/frontend.yaml apply
 
 2.	Установить сервер Hyperledger Explorer
 Посмотреть и скопировать ключ администратора для подключения к блокчейн
 ~# ls -al /mnt/nfs/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/
-
 Вставить ключ в файл configmap.yaml
 ~# nano /opt/distr/hyperledger/hf-on-k8s-course/12.explorer/configmap.yaml
 Конфигурация и запуск контейнера Hyperledger Explorer
@@ -568,10 +436,8 @@ XII.	Установка веб сервера и Hyperledger Explorer
 ~# kubectl -f /opt/distr/hyperledger/hf-on-k8s-course/12.explorer/explorer.yaml apply
 ~# kubectl -f /opt/distr/hyperledger/hf-on-k8s-course/12.explorer/explorerdb.yaml apply
 ~# kubectl -f /opt/distr/hyperledger/hf-on-k8s-course/12.explorer/explorer.yaml apply
-
 Включить переадресацию порта 8080 на сервер, работает в фоном режиме
 ~# kubectl port-forward services/explorer 8080 --address='0.0.0.0' &
-
 Для подключения к веб интерфейсу необходимо открыть веб браузер и перейти по адресу 127.0.0.1:8080
 
 
