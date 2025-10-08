@@ -3,6 +3,12 @@ I.	Установка и настройка виртуальной машины.
 1.	Необходимо установить и настроить подходящую систему виртуализации (Virtual Box, VMware Workstation, Proxmox, Hyper-V и др.) В данной инструкции будет использована система для виртуализации Oracle VM VirtualBox. Скачать можно по ссылке - https://www.virtualbox.org/wiki/Downloads
 
 2.	Создать виртуальную сеть NAT со следующими параметрами
+<img width="620" height="255" alt="image" src="https://github.com/user-attachments/assets/f5be5666-0c9f-4e42-bb18-5914d2155c42" />
+<img width="188" height="71" alt="image" src="https://github.com/user-attachments/assets/cd982097-0860-46c2-b5e2-91bdf144db54" />
+<img width="94" height="110" alt="image" src="https://github.com/user-attachments/assets/cdf4b32e-4bbe-4a74-a6bd-d5d97334a4b7" />
+<img width="964" height="637" alt="image" src="https://github.com/user-attachments/assets/0f59469d-fe62-448e-b384-e156a3a9457a" />
+
+
 
 3.	Создать перенаправление портов 
 
