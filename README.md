@@ -53,6 +53,7 @@ II.	Установка ОС Debian на виртуальную машину
   -	При завершении установки оставляем в опциях только – SSH server и Standard system utilities
     Обращаю внимание, если используется Ubuntu, то Docker нельзя ставить из прилагаемого списка в конце установки.
   -	В конце установки соглашаемся с установкой grub и устанавливаем его в корень /dev/sda
+<img width="287" height="390" alt="image" src="https://github.com/user-attachments/assets/d0da6359-231a-4e5e-ac3a-efbdc5c8ab0c" />
 
 
 III.	Putty и WinCSP
@@ -62,6 +63,10 @@ III.	Putty и WinCSP
   •	WinCSP - https://winscp.net/eng/download.php
 
 2.	Подключаться к виртуальной машине следует через адрес локальной петли 127.0.0.1
+<img width="323" height="317" alt="image" src="https://github.com/user-attachments/assets/b1af38bb-9859-4b66-918e-720b29d9c7d8" />
+<img width="465" height="317" alt="image" src="https://github.com/user-attachments/assets/d9b26732-6844-4972-8b09-231fef61df29" />
+<img width="341" height="225" alt="image" src="https://github.com/user-attachments/assets/20e37895-a82c-468b-a848-ecd8f8b178fa" />
+<img width="200" height="54" alt="image" src="https://github.com/user-attachments/assets/d8eecf18-fc68-4ed8-af77-4b4543229421" />
 
 
 IV.	Предварительная настройка виртуальной машины
@@ -74,6 +79,8 @@ IV.	Предварительная настройка виртуальной м�
 Открыть файл grub найти строку, в которой есть запись "GRUB_CMDLINE_LINUX", и отредактировать её
 ~# nano /etc/default/grub
 GRUB_CMDLINE_LINUX=”ipv6.disable=1”
+<img width="852" height="189" alt="image" src="https://github.com/user-attachments/assets/c0dc78bc-3d07-4c79-8376-1c3254bddae2" />
+
 Закрыть файл с сохранением настроек ctrl+x, y + enter
 Запустить обновление grub
 ~# update-grub2
@@ -84,9 +91,12 @@ GRUB_CMDLINE_LINUX=”ipv6.disable=1”
 Открыть файл fstab, закомментировать строчку подключения swap, перезапустить ОС
 ~# nano /etc/fstab
 ~# reboot
+<img width="933" height="43" alt="image" src="https://github.com/user-attachments/assets/7f13b911-7111-404d-868e-8ccaf9d3a47d" />
+
 После перезагрузки перезапускаем сессию Putty, заново авторизуемся и поднимаем свои права до root
 Проверить статус swap
 ~# systemctl --type swap
+<img width="974" height="159" alt="image" src="https://github.com/user-attachments/assets/eac108ee-5483-4075-919e-d3876188bb77" />
 
 4.	Создать папку для хранения исходных файлов проекта
 ~# mkdir /opt/distr
@@ -94,6 +104,7 @@ GRUB_CMDLINE_LINUX=”ipv6.disable=1”
 5.	Подключиться с помощью WinSCP и скопировать файлы проекта в папку 
 Копировать файлы проекта через WinSCP следует в папку /tmp. А затем из неё через Putty файлы копируются в папку назначения /opt/distr
 ~# cp -R /tmp/hyperledger /opt/distr/
+<img width="192" height="186" alt="image" src="https://github.com/user-attachments/assets/f9ac61a5-384a-4187-9c50-6e949acff4e3" />
 
 
 V.	Установка Docker, Minikube, настройка сетевой файловой системы NFS
@@ -117,7 +128,9 @@ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 Добавить переменные терминала пользователя, путь для запуска ASDF
 ~# nano /root/.bashrc
  export PATH=$PATH:$HOME/.asdf/bin
-. "$HOME/.asdf/asdf.sh" 
+. "$HOME/.asdf/asdf.sh"
+<img width="436" height="100" alt="image" src="https://github.com/user-attachments/assets/b4e1099e-84f9-4bc2-9e82-b24155e79086" />
+
 Перезапустить терминал
 Скачать репозиторий с Kubectl с помощью ASDF
 ~# asdf plugin-add kubectl https://github.com/asdf-community/asdf-kubectl.git  
@@ -131,6 +144,7 @@ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 В файле настроек версий добавить версию установленного kubectl
 ~# nano /root/.tool-versions
 kubectl 1.32.1
+<img width="208" height="110" alt="image" src="https://github.com/user-attachments/assets/5cd08d7c-579d-4b65-affd-3078c7d9c889" />
 
 
 VI.	Настройка сетевой файловой системы (NFS)
@@ -149,6 +163,8 @@ VI.	Настройка сетевой файловой системы (NFS)
 Прописать данные в файле exports
 ~# nano /etc/exports
 /mnt/nfs *(rw,sync,no_subtree_check,insecure)
+<img width="642" height="103" alt="image" src="https://github.com/user-attachments/assets/17ec1879-9ed9-4806-b3cd-3b43ff87e2c2" />
+
 Активировать NFS сервер
 ~# exportfs -arv
 ~# systemctl restart nfs-kernel-server
@@ -163,15 +179,20 @@ VI.	Настройка сетевой файловой системы (NFS)
 Для автоматического монтирования добавить в файл fstab точку монтирования
 ~# nano /etc/fstab                                                             
 127.0.0.1:/mnt/nfs /root/nfs_client nfs auto,nofail,noatime,nolock,tcp,actimeo=1800 0 0
+<img width="928" height="162" alt="image" src="https://github.com/user-attachments/assets/0d3a0907-2c12-43b0-a083-018c991bfeab" />
+
 Перезапустить службу и перезапуститься
 ~# systemctl daemon-reload
 ~# reboot
 Проверить что диск примонтировался
 ~# df -h 
+<img width="888" height="308" alt="image" src="https://github.com/user-attachments/assets/ae6bca60-8c69-4c4b-8e72-fb0cba299363" />
+
 Запустить Minikube проверить запущенные ноды
 ~# minikube start --driver=docker --force
 ~# kubectl get nodes
 ~# kubectl get events
+<img width="975" height="668" alt="image" src="https://github.com/user-attachments/assets/66942af7-5e65-4c3c-be29-51157e64590a" />
 
 
 VII.	Подготовка kubernetes
@@ -185,21 +206,25 @@ nfs:
 Создать pv и проверить информацию о нем
 ~# kubectl apply -f /opt/distr/hyperledger/kubernetes/1.nfs/pv.yaml
 ~# kubectl describe pv mypv
+<img width="957" height="528" alt="image" src="https://github.com/user-attachments/assets/42337aac-9405-4eda-a171-3d0b662faf94" />
 
 2.	Создать pvc (persistent volume claim)
 Создать pvc и проверить информацию о нем
 ~# kubectl apply -f /opt/distr/hyperledger/kubernetes/1.nfs/pvc.yaml
 ~# kubectl describe pvc mypvc
+<img width="974" height="419" alt="image" src="https://github.com/user-attachments/assets/999cb303-0b3c-4909-b3bd-810f3dbf5228" />
 
 3.	Конфигурация рабочей нагрузки POD
 ~# kubectl apply -f /opt/distr/hyperledger/kubernetes/1.nfs/pod.yaml
 ~# kubectl describe pod task-pv-pod
+<img width="936" height="288" alt="image" src="https://github.com/user-attachments/assets/c9450d68-4b25-4f1c-a975-5c40f081cda3" />
 
 4.	Запуск и удаления тестового примера образа Nginx
 ~# kubectl apply -f https://k8s.io/examples/application/deployment.yaml
 ~# kubectl describe deployment nginx-deployment
 Удаление контейнера nginx
 ~# kubectl delete deployment nginx-deployment
+<img width="975" height="433" alt="image" src="https://github.com/user-attachments/assets/fec88def-7a6a-4a48-a4f0-2de4885b4be8" />
 
 5.	Подготовка скриптов для развертывания блокчейна
 Скопировать необходимые скрипты в папку NFS
@@ -207,14 +232,13 @@ nfs:
 Сделать все скрипты исполняемыми и удалить права
 ~# chmod +x /mnt/nfs/scripts -R
 ~# ls -al /mnt/nfs/scripts/                                                    
+<img width="758" height="305" alt="image" src="https://github.com/user-attachments/assets/54d31e75-65b1-4d9a-b5ab-c0f23a1fc466" />
 
 
 VIII.	Конфигурация Organizations FabricCA
 
 1.	Создать папку для базовой конфигурации
 ~# mkdir -p nfs_client/organizations
-~# cp -R /opt/distr/hyperledger/kubernetes/prerequsite/* ./nfs_client/
-~# cp -r ./nfs_client/fabric-ca ./nfs_client/organizations
 cp -R /opt/distr/hyperledger/kubernetes/prerequsite/* ./nfs_client/
 
 2.	Развернуть FabricCA
@@ -243,18 +267,16 @@ kubectl apply -f /opt/distr/hyperledger/kubernetes/2.ca/ca-org1.yaml
 ~# kubectl apply -f /opt/distr/hyperledger/kubernetes/4.artifacts/job-art.yaml
 Проверить что все контейнеры запущены и работают, два последних контейнера должны быть в состоянии complete
 ~# kubectl get pods
+<img width="807" height="221" alt="image" src="https://github.com/user-attachments/assets/d9b2e03c-9547-493d-a004-8fda60c5ade7" />
 
  
 IX.	Развертывание Orderers и Peers
+<img width="974" height="468" alt="image" src="https://github.com/user-attachments/assets/af210bd8-0f76-42df-83ea-d6106395b4d9" />
 
 1.	Развернуть orderers
 
 2.	chmod -R 777 /mnt/nfs/{organizations,system-genesis-block}
 ~# kubectl apply -f /opt/distr/hyperledger/kubernetes/5.orderer
-~# kubectl apply -f /opt/distr/hyperledger/hf-on-k8s-course/5.orderer/orderer2
-~# kubectl apply -f /opt/distr/hyperledger/hf-on-k8s-course/5.orderer/orderer3
-~# kubectl apply -f /opt/distr/hyperledger/hf-on-k8s-course/5.orderer/orderer4
-~# kubectl apply -f /opt/distr/hyperledger/hf-on-k8s-course/5.orderer/orderer5
 Каждая команда создает поды для одного из узлов orderer. Эти узлы выполняют роль службы упорядочивания транзакций, которые затем добавляются в блокчейн.
 
 3.	Применить config map для внешних chaincode builders
@@ -269,6 +291,7 @@ IX.	Развертывание Orderers и Peers
 
 5.	Проверить, что все необходимые контейнеры запущены
 ~# kubectl get pods
+<img width="943" height="504" alt="image" src="https://github.com/user-attachments/assets/398bdc43-d9f3-4f31-bd7c-7aba6c7e6934" />
 
 
 X.	Установка и настройка Blockchain
@@ -276,6 +299,7 @@ X.	Установка и настройка Blockchain
 1.	Создаем канал
 ~# kubectl exec -it -f /opt/distr/hyperledger/kubernetes/7.peers/org1/peer0Org1-cli.yaml -- bash /scripts/createAppChannel.sh
 Этот скрипт создает канал “mychannel”  с использованием команды configtxgen и API Fabric. Блок используется для определения параметров канала.
+<img width="889" height="468" alt="image" src="https://github.com/user-attachments/assets/aebe9cf4-c482-4b1c-a98a-3fcb6633e24f" />
 
 2.	Подключение peers к каналу блокчейн – mychannel
 ~# kubectl exec -it -f /opt/distr/hyperledger/kubernetes/7.peers/org1/peer0Org1-cli.yaml -- peer channel join -b ./channel-artifacts/mychannel.block
@@ -300,10 +324,16 @@ X.	Установка и настройка Blockchain
 5.	Установить Lifecycle
 Установить chaincode на каждый peer. После установки chaincode на каждый peer необходимо сохранить package identifier
 ~# kubectl -f /opt/distr/hyperledger/kubernetes/7.peers/org1/peer0Org1-cli.yaml exec -- peer lifecycle chaincode install /opt/gopath/src/github.com/chaincode/basic/packaging/basic-org1.tgz
+<img width="887" height="61" alt="image" src="https://github.com/user-attachments/assets/81b6e3ee-1968-47aa-9789-4dd22abe0f5a" />
+
 basic:9696f36db244c703a0e4039674ce3682f6743577d6f9ce536f82e7377700446f
 ~# kubectl -f /opt/distr/hyperledger/kubernetes/7.peers/org2/peer0Org2-cli.yaml exec -- peer lifecycle chaincode install /opt/gopath/src/github.com/chaincode/basic/packaging/basic-org2.tgz
+<img width="934" height="67" alt="image" src="https://github.com/user-attachments/assets/d28f8895-5f05-40bc-97e9-b9766350d314" />
+
 basic:f3af4b71a80f622c90c82e1e80f28e282046d62821b47868dae0d961b8c40099
 ~# kubectl -f /opt/distr/hyperledger/kubernetes/7.peers/org3/peer0Org3-cli.yaml exec -- peer lifecycle chaincode install /opt/gopath/src/github.com/chaincode/basic/packaging/basic-org3.tgz
+<img width="880" height="73" alt="image" src="https://github.com/user-attachments/assets/071d6c68-b739-4b92-8f41-903e2f0a2144" />
+
 basic:457b9837645cc58e9941bdfcd807c70893e3fa36148af1f912c47c80cd8ef38b
 
 6.	Lifecycle chaincode install
@@ -316,16 +346,17 @@ basic:457b9837645cc58e9941bdfcd807c70893e3fa36148af1f912c47c80cd8ef38b
 
 7.	Редактирование файлов развертывания chaincode
 Для каждого файла -chaincode-deployment.yaml указать ранее сохраненный package identifier
+<img width="887" height="82" alt="image" src="https://github.com/user-attachments/assets/69635220-751a-4d55-92e2-f59d1c2ce1ef" />
+
 ~# nano /opt/distr/hyperledger/kubernetes/9.cc-deploy/basic/org1/org1-chaincode-deployment.yaml
 ~# nano /opt/distr/hyperledger/kubernetes/9.cc-deploy/basic/org2/org2-chaincode-deployment.yaml
 ~# nano /opt/distr/hyperledger/kubernetes/9.cc-deploy/basic/org3/org3-chaincode-deployment.yaml
 Вы открываете YAML-файлы для редактирования. В каждом файле указывается уникальный package identifier, который был сохранен при создании пакетов chaincode.
 ~# kubectl apply -f /opt/distr/hyperledger/kubernetes/9.cc-deploy/basic
-~# kubectl apply -f /opt/distr/hyperledger/kubernetes/9.cc-deploy/basic/org2
-~# kubectl apply -f /opt/distr/hyperledger/kubernetes/9.cc-deploy/basic/org3
 Команда kubectl apply создает поды с chaincode для каждой организации. Подтягиваются Docker-образы и запускаются контейнеры.
 Проверить работу всех контейнеров
 ~# kubectl get pods
+<img width="905" height="532" alt="image" src="https://github.com/user-attachments/assets/45a4c354-5f50-4839-ada6-eb5741d6efd8" />
 
 8.	Approve Chaincode for org
 Зайти в каждый контейнер peer0OrgX и выполнить команду approve. В команде необходимо указать ранее сохраненный package identifier
@@ -342,12 +373,16 @@ basic:457b9837645cc58e9941bdfcd807c70893e3fa36148af1f912c47c80cd8ef38b
 9.	Check commit readiness
 ~# kubectl -f /opt/distr/hyperledger/kubernetes/7.peers/org1/peer0Org1-cli.yaml exec -it -- bash
 ~# peer lifecycle chaincode checkcommitreadiness --channelID mychannel --name basic --version 1.0 --init-required --sequence 1 -o -orderer:7050 --tls --cafile $ORDERER_CA --output json
+<img width="273" height="118" alt="image" src="https://github.com/user-attachments/assets/5cebd6ad-dcb0-493e-b08f-1f188256b179" />
+
 ~# exit
 
 10.	Commit chaincode definition
 ~# kubectl -f /opt/distr/hyperledger/kubernetes/7.peers/org1/peer0Org1-cli.yaml exec -it -- bash
 Открывается интерактивная оболочка в CLI контейнере узла peer0 организации Org3. Это контейнер, через который отправляются команды для взаимодействия с Fabric.
 ~# peer lifecycle chaincode commit -o orderer:7050 --channelID mychannel --name basic --version 1.0 --sequence 1 --init-required --tls true --cafile $ORDERER_CA --peerAddresses peer0-org1:7051 --tlsRootCertFiles /organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses peer0-org2:7051 --tlsRootCertFiles /organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt --peerAddresses peer0-org3:7051 --tlsRootCertFiles /organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
+<img width="528" height="92" alt="image" src="https://github.com/user-attachments/assets/b4e70c60-128b-4e96-8f59-e07ad982ac3b" />
+
 ~# exit
 Завершаем процесс установки chaincode, регистрируя его как доступный для выполнения на канале mychannel
  -o orderer:7050: Адрес узла orderer для отправки транзакции.
@@ -398,10 +433,13 @@ XI.	Установка API сервера
 ~# kubectl -f /opt/distr/hyperledger/kubernetes/10.api/k8/api.yaml apply
 Дождаться запуска контейнера
 ~# kubectl get pods
+<img width="974" height="75" alt="image" src="https://github.com/user-attachments/assets/a2b2ff04-8545-49c9-8fe5-b6c9b28707a8" />
+
 Включить переадресацию порта 4000 на API, работает в фоном режиме
 ~# kubectl port-forward services/api 4000 &  
 Убедиться, что minikube слушает порт 4000
 ~# lsof -i -P -n
+<img width="974" height="53" alt="image" src="https://github.com/user-attachments/assets/8d4f698c-3ab3-456c-88aa-5b9f300e4c5a" />
 
 
 XII.	Установка веб сервера и Hyperledger Explorer
@@ -419,8 +457,12 @@ XII.	Установка веб сервера и Hyperledger Explorer
 2.	Установить сервер Hyperledger Explorer
 Посмотреть и скопировать ключ администратора для подключения к блокчейн
 ~# ls -al /mnt/nfs/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/
+<img width="974" height="106" alt="image" src="https://github.com/user-attachments/assets/45b60c99-9f62-4dea-b496-1a37b3835a4d" />
+
 Вставить ключ в файл configmap.yaml
 ~# nano /opt/distr/hyperledger/kubernetes/12.explorer/configmap.yaml
+<img width="1076" height="80" alt="image" src="https://github.com/user-attachments/assets/7a7f7c3e-fd86-499d-b544-a95ae5bb9957" />
+
 Конфигурация и запуск контейнера Hyperledger Explorer
 ~# kubectl apply -f /opt/distr/hyperledger/kubernetes/12.explorer/configmap.yaml
 ~# kubectl -f /opt/distr/hyperledger/kubernetes/12.explorer/explorerdb.yaml apply
@@ -428,6 +470,7 @@ XII.	Установка веб сервера и Hyperledger Explorer
 Включить переадресацию порта 8080 на сервер, работает в фоном режиме
 ~# kubectl port-forward services/explorer 8080 --address='0.0.0.0' &
 Для подключения к веб интерфейсу необходимо открыть веб браузер и перейти по адресу 127.0.0.1:8080
+<img width="613" height="328" alt="image" src="https://github.com/user-attachments/assets/01476cc5-39f5-497b-aea4-eb36b4032220" />
 
 
 XIII.	Запуск образа
@@ -438,7 +481,9 @@ XIII.	Запуск образа
 Запуск:
 После старта виртуальной машины, необходимо запустить Minikube и в течении 5 – 10 минут дождаться запуска всех подов. 
 1.	Заходим в виртуальную машину логин – root, пароль – 123456
+<img width="508" height="180" alt="image" src="https://github.com/user-attachments/assets/5cf0b57b-77fc-4d80-ba67-01285ed529d6" />
  
 2.	Запускаем Minikube командой – minikube start –drive=docker –force
+<img width="1058" height="479" alt="image" src="https://github.com/user-attachments/assets/322d18a4-3e76-49d9-9cae-026a0c9b3396" />
    
 3.	Ждем 5–10 минут и проверяем поды командой – kubectl get pods
