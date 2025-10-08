@@ -129,8 +129,7 @@ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null</br>
 ~# nano /root/.bashrc</br>
  export PATH=$PATH:$HOME/.asdf/bin</br>
 . "$HOME/.asdf/asdf.sh"</br>
-<img width="436" height="100" alt="image" src="https://github.com/user-attachments/assets/b4e1099e-84f9-4bc2-9e82-b24155e79086" />
-
+<img width="436" height="100" alt="image" src="https://github.com/user-attachments/assets/b4e1099e-84f9-4bc2-9e82-b24155e79086" /></br>
 Перезапустить терминал</br>
 Скачать репозиторий с Kubectl с помощью ASDF</br>
 ~# asdf plugin-add kubectl https://github.com/asdf-community/asdf-kubectl.git  </br>
