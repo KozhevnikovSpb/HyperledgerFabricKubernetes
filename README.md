@@ -8,15 +8,20 @@ I.	Установка и настройка виртуальной машины.
 <img width="94" height="110" alt="image" src="https://github.com/user-attachments/assets/cdf4b32e-4bbe-4a74-a6bd-d5d97334a4b7" />
 <img width="964" height="637" alt="image" src="https://github.com/user-attachments/assets/0f59469d-fe62-448e-b384-e156a3a9457a" />
 
-
-
 3.	Создать перенаправление портов 
+<img width="1144" height="236" alt="image" src="https://github.com/user-attachments/assets/223c3ec8-4861-412b-b6aa-7634dbb2d939" />
 
 4.	Создаем виртуальную машину со следующими минимальными параметрами:
-  •	Оперативная память от 8 Gb;
-  •	Процессор от 6-ти ядер;
-  •	Жесткий диск от 45 Gb;
-  •	Сетевой интерфейс в режим NAT Сеть. 
+  - Оперативная память от 8 Gb;
+  -	Процессор от 6-ти ядер;
+  -	Жесткий диск от 45 Gb;
+  -	Сетевой интерфейс в режим NAT Сеть.
+<img width="377" height="126" alt="image" src="https://github.com/user-attachments/assets/3f0453ef-f793-4e41-8ffe-5445a981c66e" />
+<img width="548" height="309" alt="image" src="https://github.com/user-attachments/assets/e9760a10-1005-4184-8497-d526b20ac577" />
+<img width="544" height="174" alt="image" src="https://github.com/user-attachments/assets/b6b0e496-5925-4238-b8ed-67c9bc37c31b" />
+<img width="542" height="253" alt="image" src="https://github.com/user-attachments/assets/b8df4efa-b304-488b-8e34-438bbd5f42af" />
+<img width="547" height="292" alt="image" src="https://github.com/user-attachments/assets/d31a72e4-7221-419b-8541-981c9c528499" />
+<img width="966" height="499" alt="image" src="https://github.com/user-attachments/assets/c4ae8936-13e0-4819-8d16-39ff00ee67fa" />
 
 5.	В качестве гостевой ОС можно использовать Ubuntu Server (желательно в самом минимальном режиме) или Debian (без дальнейшей установки GUI). При установке Ubuntu Server необходимо обратить внимание на выбор типа жесткого диска в процессе установки, он не должен иметь тип LVM. При использовании ОС Debian получается минимальный установочный размер ОС около 2 Gb, это меньше чем для ОС Ubuntu Server. 
 
@@ -24,26 +29,30 @@ I.	Установка и настройка виртуальной машины.
 II.	Установка ОС Debian на виртуальную машину
 
 1.	После создания виртуальной машины нажимаем «Старт» и начинаем устанавливать гостевую ОС: 
-  •	На экране приветствия выбираем – Graphical install
-  •	Язык оставляем – English
-  •	Локацию можно установить – Other -> Europe -> Russian Federation
-  •	Конфигурацию локали оставляем и язык клавиатуры оставляем по умолчанию
-  •	На этапе задания Domain name, необходимо вернуться на шаг назад и сконфигурировать IP адрес вручную
-    ip – 10.0.2.5
-    netmask – 255.255.255.0
-    gateway – 10.0.2.1
-    nameserver – 10.0.2.1
-  •	Hostname и Domain name можно указать любой по желанию
-  •	Задаем пароль root, затем имя администратор и пароль для него
-  •	Выбираем часовой пояс
-  •	При разметке жесткого диска оставляем все по умолчанию – Guided – use entire disk
-  •	При настройке partition disks – All files in one partition
-  •	На заключительном этапе – соглашаемся с записью изменений на диск
-  •	Отказываемся от сканирования других медиа
-  •	Выбираем для настройки package manager все по умолчанию
-  •	При завершении установки оставляем в опциях только – SSH server и Standard system utilities
+<img width="255" height="101" alt="image" src="https://github.com/user-attachments/assets/b8f35e28-c880-47a3-a1c2-21d16f6d8fcd" />
+
+  -	На экране приветствия выбираем – Graphical install
+  -	Язык оставляем – English
+  -	Локацию можно установить – Other -> Europe -> Russian Federation
+  -	Конфигурацию локали оставляем и язык клавиатуры оставляем по умолчанию
+  -	На этапе задания Domain name, необходимо вернуться на шаг назад и сконфигурировать IP адрес вручную
+      - ip – 10.0.2.5
+      - netmask – 255.255.255.0
+      - gateway – 10.0.2.1
+      - nameserver – 10.0.2.1
+<img width="277" height="184" alt="image" src="https://github.com/user-attachments/assets/a9bf30f4-2544-4470-b5e4-6cb44f7b38dd" />
+
+  -	Hostname и Domain name можно указать любой по желанию
+  -	Задаем пароль root, затем имя администратор и пароль для него
+  -	Выбираем часовой пояс
+  -	При разметке жесткого диска оставляем все по умолчанию – Guided – use entire disk
+  -	При настройке partition disks – All files in one partition
+  -	На заключительном этапе – соглашаемся с записью изменений на диск
+  -	Отказываемся от сканирования других медиа
+  -	Выбираем для настройки package manager все по умолчанию
+  -	При завершении установки оставляем в опциях только – SSH server и Standard system utilities
     Обращаю внимание, если используется Ubuntu, то Docker нельзя ставить из прилагаемого списка в конце установки.
-  •	В конце установки соглашаемся с установкой grub и устанавливаем его в корень /dev/sda
+  -	В конце установки соглашаемся с установкой grub и устанавливаем его в корень /dev/sda
 
 
 III.	Putty и WinCSP
